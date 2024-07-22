@@ -1,4 +1,4 @@
-body {
+/* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -10,4 +10,37 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+} */
+
+
+/* src/index.css */
+/* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@700&display=swap'); */
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-background font-body;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-heading;
+} */
+
+
+/* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-background font-body;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-heading;
+}
+
