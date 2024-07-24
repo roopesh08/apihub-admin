@@ -1,4 +1,3 @@
-// src/pages/AddCategory.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button, Typography, Box } from '@mui/material';
@@ -10,10 +9,10 @@ const AddCategory = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/categories', { name });
-      console.log(response.data);
+      console.log('Full Response:', response);
       setName('');
     } catch (error) {
-      console.error(error);
+      console.error('Error submitting form:', error.response ? error.response.data : error.message);
     }
   };
 

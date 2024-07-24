@@ -15,8 +15,7 @@ const EndpointForm = () => {
   const [errorModalOpen, setErrorModalOpen] = useState(false);
 
   useEffect(() => {
-    // Fetch categories from the API
-    axios.get('/api/categories')
+    axios.get('http://localhost:5000/api/categories')
       .then(response => {
         setCategories(response.data);
       })
@@ -33,7 +32,6 @@ const EndpointForm = () => {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
 
-    // Validate file extension
     if (file && file.name.split('.').pop() !== 'json') {
       setErrorModalOpen(true);
       return;
@@ -44,27 +42,30 @@ const EndpointForm = () => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const content = JSON.parse(e.target.result);
-      setFileContent(content[0] || content);  // Display only the first object
+      setFileContent(content[0] || content);
     };
     reader.readAsText(file);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     const data = new FormData();
     data.append('endpointName', formData.endpointName);
     data.append('category', formData.category);
     data.append('description', formData.description);
     data.append('jsonFile', formData.jsonFile);
 
-    axios.post('/api/submit-endpoint', data)
-      .then(response => {
-        console.log('Form submitted successfully:', response.data);
-      })
-      .catch(error => {
-        console.error('Error submitting form:', error);
+    try {
+      const response = await axios.post('http://localhost:5000/api/endpoints', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
+      console.log('Form submitted successfully:', response.data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
   };
 
   return (
@@ -93,7 +94,7 @@ const EndpointForm = () => {
           required
         >
           {categories.map(category => (
-            <MenuItem key={category.id} value={category.name}>
+            <MenuItem key={category._id} value={category.name}>
               {category.name}
             </MenuItem>
           ))}

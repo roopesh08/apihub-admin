@@ -9,6 +9,7 @@ import CategoryManagement from './components/pages/CategoryManagement';
 import EndpointForm from './components/EndpointForm';
 import Navbar from './components/Navbar';
 import Settings from './components/pages/Settings';
+import ListCategories from './components/pages/ListCateogories';
 
 const theme = createTheme();
 
@@ -31,6 +32,7 @@ const App = () => {
               <Route path="/endpoint-form" element={<EndpointForm />} />
               {/* <Route path="/endpoint-form" element={<EndpointForm />} /> */}
               <Route path="/settings" element={<Settings/>} /> {/* Placeholder for Settings Page */}
+              <Route path="/list-categories" element={<ListCategories />} />
             </Routes>
           </Box>
         </Box>
