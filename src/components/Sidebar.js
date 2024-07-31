@@ -4,6 +4,7 @@ import { Drawer, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CategoryIcon from '@mui/icons-material/Category';
 import { Link } from 'react-router-dom';
+import ApiIcon from '@mui/icons-material/Api';
 
 const drawerWidth = 240;
 
@@ -38,7 +39,7 @@ const Sidebar = () => {
         </ListItem>
         <ListItem button component={Link} to="/endpoint-form">
           <ListItemIcon>
-            <CategoryIcon />
+            <ApiIcon />
           </ListItemIcon>
           <ListItemText primary="EndPoint" />
         </ListItem>

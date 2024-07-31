@@ -1,14 +1,30 @@
-// src/pages/CategoryManagement.js
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const CategoryManagement = () => {
   const [categories, setCategories] = useState([]);
   const [categoryName, setCategoryName] = useState('');
+  const [categoryDesc, setCategoryDesc] = useState('');
+  const [showBadge, setShowBadge] = useState(false);
 
-  const handleAddCategory = () => {
-    if (categoryName.trim() !== '') {
-      setCategories([...categories, categoryName]);
-      setCategoryName('');
+  const handleAddCategory = async (e) => {
+    e.preventDefault();
+    try {
+      if (categoryName.trim() !== '') {
+        const response = await axios.post('http://localhost:5000/api/categories', { name: categoryName, desc: categoryDesc });
+        console.log('Full Response:', response);
+        setCategories([...categories, categoryName, categoryDesc]);
+        setCategoryName('');
+        setCategoryDesc('');
+
+        // Show badge and hide it after 3 seconds
+        setShowBadge(true);
+        setTimeout(() => {
+          setShowBadge(false);
+        }, 3000);
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error.response ? error.response.data : error.message);
     }
   };
 
@@ -26,23 +42,25 @@ const CategoryManagement = () => {
             placeholder="Enter category name"
             className="w-full p-2 border rounded mb-2"
           />
+
+          <input
+            type="text"
+            value={categoryDesc}
+            onChange={(e) => setCategoryDesc(e.target.value)}
+            placeholder="Category Description"
+            className="w-full p-2 border rounded mb-2"
+          />
           <button
             onClick={handleAddCategory}
             className="bg-primary text-white px-4 py-2 rounded"
           >
             Add Category
           </button>
-        </div>
-
-        <div>
-          <h2 className="text-xl font-semibold text-secondary mb-2">List of Categories</h2>
-          <ul className="list-disc list-inside">
-            {categories.map((category, index) => (
-              <li key={index} className="mb-1">
-                {category}
-              </li>
-            ))}
-          </ul>
+          {showBadge && (
+            <div className="mt-2 text-green-500 font-bold">
+              Category added successfully!
+            </div>
+          )}
         </div>
       </div>
     </div>

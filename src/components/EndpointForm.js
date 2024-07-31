@@ -4,15 +4,20 @@ import axios from 'axios';
 import { Button, TextField, MenuItem, Typography, Box, Modal } from '@mui/material';
 
 const EndpointForm = () => {
-  const [categories, setCategories] = useState([]);
-  const [formData, setFormData] = useState({
+  const initialState = {
     endpointName: '',
     category: '',
     description: '',
     jsonFile: null,
-  });
+  }
+  const [categories, setCategories] = useState([]);
+  const [formData, setFormData] = useState(initialState);
   const [fileContent, setFileContent] = useState(null);
   const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [errorModalContent, setErrorModalContent] = useState({
+    title: '',
+    description: "",
+  });
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/categories')
@@ -34,6 +39,11 @@ const EndpointForm = () => {
 
     if (file && file.name.split('.').pop() !== 'json') {
       setErrorModalOpen(true);
+      setErrorModalContent({
+        ...errorModalContent,
+        title: 'Error',
+        description: "You have to upload a JSON file only."
+      })
       return;
     }
 
@@ -50,21 +60,46 @@ const EndpointForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const data = new FormData();
-    data.append('endpointName', formData.endpointName);
-    data.append('category', formData.category);
-    data.append('description', formData.description);
-    data.append('jsonFile', formData.jsonFile);
+    console.log('haaa', fileContent)
+    if (!fileContent) {
+      setErrorModalOpen(true)
+      setErrorModalContent({
+        ...errorModalContent,
+        title: 'Error',
+        description: "Please Upload JSON file to submit"
+      })
+    } else {
+      const data = {
+        endpointName: formData.endpointName,
+        category: formData.category,
+        description: formData.description,
+        fileContent: fileContent
+      }
 
-    try {
-      const response = await axios.post('http://localhost:5000/api/endpoints', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
+      try {
+        console.log('Form submitted successfully:', formData, data);
+        const response = await axios.post('http://localhost:5000/api/endpoints', data);
+        if (response.status === 200) {
+          setFormData(initialState)
+          setFileContent(null)
+          setErrorModalOpen(true)
+          setTimeout(() => setErrorModalOpen(false), 3000)
+          setErrorModalContent({
+            ...errorModalContent,
+            title: 'Success',
+            description: "Endpoint added succesfully"
+          })
+        } else {
+          setErrorModalContent({
+            ...errorModalContent,
+            title: 'Error',
+            description: "Failed to create Endpoint"
+          })
         }
-      });
-      console.log('Form submitted successfully:', response.data);
-    } catch (error) {
-      console.error('Error submitting form:', error);
+        console.log('ress', response)
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      }
     }
   };
 
@@ -122,7 +157,7 @@ const EndpointForm = () => {
             accept=".json"
             hidden
             onChange={handleFileChange}
-            required
+
           />
         </Button>
         {fileContent && (
@@ -142,6 +177,7 @@ const EndpointForm = () => {
           Submit
         </Button>
       </form>
+
       <Modal
         open={errorModalOpen}
         onClose={() => setErrorModalOpen(false)}
@@ -158,23 +194,24 @@ const EndpointForm = () => {
             p: 4,
           }}
         >
-          <Typography variant="h6" component="h2">
-            Error
+          <Typography variant="h6" component="h2" style={{ color: errorModalContent.title === 'Error' ? 'red' : 'green' }}>
+            {errorModalContent.title}
           </Typography>
           <Typography sx={{ mt: 2 }}>
-            You have to upload a JSON file only.
+            {errorModalContent.description}
           </Typography>
           <Button
             variant="contained"
-            color="primary"
-            sx={{ mt: 2 }}
-            onClick={() => setErrorModalOpen(false)}
+            style={{backgroundColor: errorModalContent.title === 'Error' ? '#d2194a': "#1976d2"}}
+          sx={{ mt: 2 }}
+
+          onClick={() => setErrorModalOpen(false)}
           >
-            Close
-          </Button>
-        </Box>
-      </Modal>
+          Close
+        </Button>
     </Box>
+      </Modal >
+    </Box >
   );
 };
 
