@@ -7,6 +7,7 @@ This project is a React-based application with a focus on using modern libraries
 - [Installation](#installation)
 - [Required Installations](#required-installations)
 - [Available Scripts](#available-scripts)
+- [Running the Application](#running-the-application)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
@@ -85,11 +86,13 @@ This project requires the following libraries and tools:
     ```sh
     npm install tailwindcss postcss autoprefixer
     ```
-CORS: A package for providing a Connect/Express middleware that can be used to enable CORS with various options. To install, use:
 
-sh
-Copy code
-npm install cors
+- **CORS**: A package for providing a Connect/Express middleware that can be used to enable CORS with various options. To install, use:
+
+    ```sh
+    npm install cors
+    ```
+
 ## 📜 Available Scripts
 
 In the project directory, you can run:
@@ -109,6 +112,70 @@ Launches the test runner in interactive watch mode.
 ### `npm run eject`
 
 If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+## 🚀 Running the Application
+
+### Running the Frontend
+
+1. Navigate to the project directory:
+
+    ```sh
+    cd client
+    ```
+
+2. Start the React development server:
+
+    ```sh
+    npm start
+    ```
+
+    This will run the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+### Running the Backend
+
+1. Navigate to the backend directory (if your backend is in a separate directory):
+
+    ```sh
+    cd client
+    ```
+
+2. Install backend dependencies (if you haven't already):
+
+    ```sh
+    npm install
+    ```
+
+3. Start the Express server:
+
+    ```sh
+    node server.js
+    ```
+
+    This will start the backend server, typically running on [http://localhost:5000](http://localhost:5000).
+
+### Running Both Frontend and Backend Concurrently
+
+To run both frontend and backend servers concurrently, you can use a tool like `concurrently`. First, install `concurrently`:
+
+```sh
+npm install concurrently --save-dev
+```
+
+Then, add a new script to your `package.json`:
+
+```json
+"scripts": {
+  "start": "concurrently \"npm run start:client\" \"npm run start:server\"",
+  "start:client": "cd client && npm start",
+  "start:server": "cd backend && node server.js"
+}
+```
+
+Now, you can start both servers with a single command:
+
+```sh
+npm start
+```
 
 ## 📚 Usage
 
@@ -130,6 +197,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-Made with ❤️ by Roopesh Votarikari
+Made with ❤️ by Roopesh
 
 ---
